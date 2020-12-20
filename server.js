@@ -4,6 +4,10 @@ const ejs=require('ejs')
 const path=require('path')
 const expressLayout=require('express-ejs-layouts')
 const PORT=process.env.port||7000
+//Assets
+app.use(express.static('public'))
+
+
 app.get('/',function(req,res){
     //res.send('Hello from server')
   res.render('home')  
