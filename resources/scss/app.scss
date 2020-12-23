@@ -37,3 +37,21 @@ section.hero {
     color: white;
   }
 }
+.btn-primary {
+  background: rgb(180, 105, 124);
+  transition: $smooth;
+  &:hover {
+    background: red;
+  }
+}
+
+section.cart {
+  background: rgb(248, 247, 247);
+}
+.amount {
+  color: red;
+}
+section.login {
+  background: rgb(216, 208, 208);
+  min-height: calc(100vh-86px);
+}
