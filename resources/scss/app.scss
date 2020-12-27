@@ -1,4 +1,6 @@
 @import "./variables";
+@import "~noty/src/noty.scss";
+@import "~noty/src/themes/mint.scss"; //;sign must be added for no error in importing statements
 
 body {
   font-family: "Lato", sans-serif;
@@ -36,6 +38,9 @@ section.hero {
     border-color: white;
     color: white;
   }
+  &:focus {
+    outline: none; //to remove outline from blue button
+  }
 }
 .btn-primary {
   background: rgb(180, 105, 124);
@@ -54,4 +59,10 @@ section.cart {
 section.login {
   background: rgb(216, 208, 208);
   min-height: calc(100vh-86px);
+}
+
+//notification class
+.noty_theme_mint {
+  border-radius: 20px !important;
+  padding-left: 8px !important;
 }
