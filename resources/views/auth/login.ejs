@@ -1,8 +1,11 @@
 <section class="login">
     <div class="flex items-center justify-center">
         <div class="w-full max-w-md">
-          <form class="bg-white shadow-lg rounded px-12 pt-6 pb-8 mb-4 border border-gray-400">
+          <form action="/login" method="POST" class="bg-white shadow-lg rounded px-12 pt-6 pb-8 mb-4 border border-gray-400">
             <!-- @csrf -->
+            <%  if(messages.error){%> <!-- to show this error when required ..due to flash message object is available to us in frontend and we are using the key error to check if the error has really occured or not-->
+              <span class="text-red-500"><%= messages.error %></span>
+               <% } %> 
             <div
               class="text-gray-800 text-2xl flex justify-center border-b-2 py-2 mb-4 font-bold"
             >

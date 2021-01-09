@@ -48,6 +48,9 @@ section.hero {
   &:hover {
     background: red;
   }
+  &:focus {
+    outline: none; //to remove outline from blue button
+  }
 }
 
 section.cart {

@@ -1,8 +1,12 @@
 <section class="login">
     <div class="flex items-center justify-center">
         <div class="w-full max-w-md">
-          <form class="bg-white shadow-lg rounded px-12 pt-6 pb-8 mb-4 border border-gray-400">
+          <form action="/register" method="POST" bg-white shadow-lg rounded px-12 pt-6 pb-8 mb-4 border border-gray-400"> <!-- add action and method on form-->
             <!-- @csrf -->
+            <%  if(messages.error){%> <!-- to show this error when required ..due to flash message object is available to us in frontend and we are using the key error to check if the error has really occured or not-->
+            <span class="text-red-500"><%= messages.error %></span>
+             <% } %> 
+             <!-- Also erased required field from all email,name,password-->
             <div
               class="text-gray-800 text-2xl flex justify-center border-b-2 py-2 mb-4 font-bold"
             >
@@ -15,11 +19,11 @@
                 >
                   Name
                 </label>
-                <input
+                <input value="<%= messages.name %>"
                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   name="name"
                   type="text"
-                  required
+                 
                   autofocus
                   placeholder="Enter your name"
                 />
@@ -31,12 +35,12 @@
               >
                 Email
               </label>
-              <input
+              <input value="<%= messages.email %>"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 name="email"
                 v-model="form.email"
                 type="email"
-                required
+                
                 autofocus
                 placeholder="Enter your email"
               />
@@ -54,7 +58,7 @@
                 type="password"
                 placeholder="Enter your password"
                 name="password"
-                required
+                
                 autocomplete="current-password"
               />
             </div>
