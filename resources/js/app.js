@@ -4,6 +4,9 @@
 //****************************************************************************************************
 import axios from 'axios' //importing axios library
 import Noty from 'noty'
+import moment from 'moment'
+import { initAdmin } from './admin'
+
 let addToCart =document.querySelectorAll('.add-to-cart') //array of add to cart button
  let cartCounter=document.querySelector('#cartCounter')
 
@@ -44,7 +47,16 @@ addToCart.forEach((btn)=>{
    //let pizza=btn.dataset.pizza //rightnow it is string//to get data attribute
    let pizza=JSON.parse(btn.dataset.pizza)//to convert it into object agai  parse is used...opposite of stringify
    updateCart(pizza)
-   console.log(pizza)
+   //console.log(pizza)
     })
 
 })
+// Remove alert message after X seconds
+const alertMsg = document.querySelector('#success-alert')
+if(alertMsg) {
+    setTimeout(() => {
+        alertMsg.remove()
+    }, 2000)
+}
+
+initAdmin()
