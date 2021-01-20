@@ -19,9 +19,16 @@ return {
         address
     })
     order.save().then(result => {
-     req.flash('success', 'Order placed successfully')
-      delete req.session.cart //to delete cart ater order has been placed
-     return res.redirect('/customer/orders')
+      Order.populate(result, { path: 'customerId' }, (err, placedOrder) => {
+        req.flash('success', 'Order placed successfully')
+        delete req.session.cart //to delete cart ater order has been placed
+        //Emit
+        const eventEmitter = req.app.get('eventEmitter')
+        eventEmitter.emit('orderPlaced',placedOrder)
+       return res.redirect('/customer/orders')
+
+      })
+    
 
     }).catch(err=>{
         req.flash('error','Something went wrong')
@@ -42,7 +49,16 @@ return {
     */
    res.render('customers/orders',{orders:orders,moment: moment}) //sending order and moment to frontend
   // console.log(orders)
-    }
+    },
+    async show(req, res) {
+      const order = await Order.findById(req.params.id)
+      // Authorize user
+      // to allow only authorised user to see his order
+      if(req.user._id.toString() === order.customerId.toString()) { //we can't compare two objects therefore we have to convert it into string
+          return res.render('customers/singleOrder', { order })
+      }
+      return  res.redirect('/')
+  }
 }
 
 

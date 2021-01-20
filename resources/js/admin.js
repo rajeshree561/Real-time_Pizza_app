@@ -1,7 +1,7 @@
 import axios from 'axios'
  import Noty from 'noty'
  import moment from 'moment'
-export function initAdmin() {
+export function initAdmin(socket) {
     const orderTableBody = document.querySelector('#orderTableBody') //to get order table body from order.ejs
 
     let orders = []
@@ -80,5 +80,19 @@ function renderItems(items) {
         `
         }).join('')
     }
+
+// Socket
+//let socket =io()
+socket.on('orderPlaced', (order) => {
+    new Noty({
+        type: 'success',
+        timeout: 1000,
+        text: 'New order!',
+        progressBar: false,
+    }).show();
+    orders.unshift(order) //opposite of push
+    orderTableBody.innerHTML = '' //to clear table
+    orderTableBody.innerHTML = generateMarkup(orders)
+})
 }
     //module.exports=initAdmin

@@ -10,6 +10,7 @@ const session=require('express-session')
 const flash= require('express-flash')
 const MongoDbStore=require('connect-mongo')(session) ////session store
 const passport = require('passport')
+const Emitter = require('events')
 //Database connection
 const url='mongodb://localhost/pizza';
 
@@ -30,6 +31,9 @@ let mongoStore=new MongoDbStore({
                 collection:'sessions'
                    })
 
+ //Event emitter                  
+ const eventEmitter = new Emitter()
+app.set('eventEmitter', eventEmitter) //to bind emitter to app ,now wecan use it anywhere
 
 //session configuration(sesion library act as middleware therefore we r using app.use)
 //session don't work without cookies
@@ -70,8 +74,29 @@ require('./routes/web')(app)
 //so that your layout works keep routes sfter setting engine
 
 
-app.listen(PORT,()=> {
+const server= app.listen(PORT,()=> {
 
 console.log(`listening on port ${PORT}`)
 
+})
+
+//Socket
+
+
+const io = require('socket.io')(server)
+io.on('connection', (socket) => {
+      // Join
+     // console.log(socket.id)
+      socket.on('join', (orderId) => { // room should be unique for each orders therefore using order id
+      //  console.log(orderId)
+        socket.join(orderId)
+      })
+})
+
+eventEmitter.on('orderUpdated', (data) => {
+    io.to(`order_${data.id}`).emit('orderUpdated', data)
+})
+
+eventEmitter.on('orderPlaced', (data) => {
+    io.to('adminRoom').emit('orderPlaced', data)
 })

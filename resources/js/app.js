@@ -59,4 +59,69 @@ if(alertMsg) {
     }, 2000)
 }
 
-initAdmin()
+
+ //change order status
+ let statuses = document.querySelectorAll('.status_line')
+let hiddenInput = document.querySelector('#hiddenInput')
+let order = hiddenInput ? hiddenInput.value : null
+order = JSON.parse(order) //to convert string back to object
+let time = document.createElement('small')
+
+function updateStatus(order) {
+    statuses.forEach((status) => {
+        status.classList.remove('step-completed')
+        status.classList.remove('current')
+    })
+    let stepCompleted = true;// in starting first line is gray by default
+    statuses.forEach((status) => {
+       let dataProp = status.dataset.status
+       if(stepCompleted) {
+            status.classList.add('step-completed')
+       }
+       if(dataProp === order.status) {
+            stepCompleted = false
+            time.innerText = moment(order.updatedAt).format('hh:mm A')
+            status.appendChild(time)
+           if(status.nextElementSibling) { //for last stage there won't be next state therefore if condition to check
+            status.nextElementSibling.classList.add('current')
+           }
+       }
+    })
+
+}
+
+updateStatus(order);
+ //initStripe()
+
+//Socket
+// Client side work of socket
+
+
+
+
+let socket = io() // got from server ..code in layout.ejs --script tag
+initAdmin(socket)
+// Join
+if(order) {
+    socket.emit('join', `order_${order._id}`)
+}
+let adminAreaPath = window.location.pathname
+if(adminAreaPath.includes('admin')) {
+    initAdmin(socket)
+    socket.emit('join', 'adminRoom') //to make adminroom for admin if logged in
+}
+
+
+socket.on('orderUpdated', (data) => {
+    const updatedOrder = { ...order }// to copy object in js use three dots to copy object
+    updatedOrder.updatedAt = moment().format()
+    updatedOrder.status = data.status
+   updateStatus(updatedOrder)
+    new Noty({
+        type: 'success',
+        timeout: 1000,
+        text: 'Order updated',
+        progressBar: false,
+    }).show();
+    console.log(data)
+})
