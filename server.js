@@ -13,8 +13,8 @@ const passport = require('passport')
 const Emitter = require('events')
 //Database connection
 const url='mongodb://localhost/pizza';
-
-mongoose.connect(url,{ useNewUrlParser: true, useCreateIndex:true, useUnifiedTopology: true, useFindAndModify : true });
+ 
+mongoose.connect(process.env.MONGO_CONNECTION_URL,{ useNewUrlParser: true, useCreateIndex:true, useUnifiedTopology: true, useFindAndModify : true }); //url in env file
 const connection = mongoose.connection;
 connection.once('open', () => {
     console.log('Database connected...');
@@ -69,6 +69,10 @@ app.set('views',path.join(__dirname,'/resources/views'))
 app.set('view engine','ejs')
 
 require('./routes/web')(app)
+//to show error page when url entered is not found
+app.use((req, res) => {
+    res.status(404).render('errors/404')
+})
 
 
 //so that your layout works keep routes sfter setting engine

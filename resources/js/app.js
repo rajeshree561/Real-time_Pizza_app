@@ -100,14 +100,14 @@ updateStatus(order);
 
 
 let socket = io() // got from server ..code in layout.ejs --script tag
-initAdmin(socket)
+
 // Join
 if(order) {
     socket.emit('join', `order_${order._id}`)
 }
 let adminAreaPath = window.location.pathname
 if(adminAreaPath.includes('admin')) {
-    initAdmin(socket)
+    initAdmin(socket) //add check so that it is called only when you are in admin panel
     socket.emit('join', 'adminRoom') //to make adminroom for admin if logged in
 }
 

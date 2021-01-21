@@ -63,6 +63,9 @@ section.login {
   background: rgb(216, 208, 208);
   min-height: calc(100vh-86px);
 }
+.not {
+  min-height: calc(100vh-150px);
+}
 
 //notification class
 .noty_theme_mint {
@@ -179,4 +182,21 @@ section.status {
   float: right;
   font-size: 14px;
   margin-top: 8px;
+}
+// to make our app responsive
+@media (max-width: 1060px) {
+  .container {
+    max-width: 90%;
+  }
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 768px) {
+  .status-box ul li span:before {
+    font-size: 34px;
+  }
 }
